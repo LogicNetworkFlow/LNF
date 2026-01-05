@@ -1,0 +1,10 @@
+*.pyc
+
+*.png
+*.gif
+*.jpg
+*.jpeg
+**/__pycache__/
+.history
+.vscode
+
