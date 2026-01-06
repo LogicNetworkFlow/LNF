@@ -141,7 +141,8 @@ def main(config_path):
 			z_val = dict_dnf[nf_name].ye_hold[edge_no, time_step]
 			z_pi.append(z_val)
             
-		_ = logic_nf(optimizer_model, unique_predicate_dict, node_list, edge_list, output, z_pi)
+		_ = logic_nf(optimizer_model, unique_predicate_dict, node_list, edge_list, output, z_pi, 
+			   			add_lt_cuts=False, use_sos1_encoding=False)
 
 	elif config['model'] == 'LT':
 
