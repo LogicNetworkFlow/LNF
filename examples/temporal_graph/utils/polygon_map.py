@@ -157,97 +157,6 @@ def visualize_map_detailed(original_polygons, shrunk_polygons, map_width, map_he
     plt.tight_layout()
     plt.show()
 
-# def convert_polygons_to_temporal_graph(polygons, velocity=1.0, min_distance=0.01):
-#     """
-#     Convert a polygon map to a TemporalGraph where:
-#     - Nodes are at polygon intersections
-#     - Edges follow polygon boundaries
-#     - Travel times are calculated based on distance and constant velocity
-    
-#     Parameters:
-#     - polygons: List of shapely.Polygon objects
-#     - velocity: Constant velocity for travel time calculation
-#     - min_distance: Minimum distance between nodes to consider them distinct
-    
-#     Returns:
-#     - TemporalGraph object
-#     """
-#     # Create a new temporal graph
-#     graph = TemporalGraph()
-    
-#     # Step 1: Extract all boundary lines from polygons
-#     all_lines = []
-#     for polygon in polygons:
-#         # Get the exterior boundary
-#         exterior_coords = list(polygon.exterior.coords)
-#         # Create line segments for each edge of the polygon
-#         for i in range(len(exterior_coords) - 1):
-#             line = LineString([exterior_coords[i], exterior_coords[i+1]])
-#             all_lines.append(line)
-    
-#     # Step 2: Merge all lines to get a single MultiLineString
-#     # This will handle overlapping lines correctly by merging them
-#     merged_geometry = unary_union(all_lines)
-    
-#     # Step 3: Extract all significant points from the merged geometry
-#     # This includes all endpoints and intersection points
-#     significant_points = set()
-    
-#     # Extract nodes from the merged geometry
-#     if isinstance(merged_geometry, LineString):
-#         # For a single line, add all vertices
-#         for coord in merged_geometry.coords:
-#             significant_points.add((coord[0], coord[1]))
-#     elif isinstance(merged_geometry, MultiLineString):
-#         # For each line in the collection:
-#         # 1. Add all vertices
-#         # 2. Find points where lines meet (shared vertices)
-        
-#         # First pass: collect all vertices
-#         all_vertices = []
-#         for line in merged_geometry.geoms:
-#             for coord in line.coords:
-#                 all_vertices.append((coord[0], coord[1]))
-                
-#         # Using a dictionary to count occurrences of each vertex
-#         vertex_counts = {}
-#         for vertex in all_vertices:
-#             # Round coordinates slightly to handle floating point imprecision
-#             rounded = (round(vertex[0], 10), round(vertex[1], 10))
-#             vertex_counts[rounded] = vertex_counts.get(rounded, 0) + 1
-        
-#         # Add all vertices to significant points
-#         # Vertices that appear multiple times are intersection points
-#         for vertex, count in vertex_counts.items():
-#             significant_points.add(vertex)
-    
-#     # Step 4: Create nodes at all significant points
-#     nodes = {}
-#     for x, y in significant_points:
-#         config = [x, y]
-#         node = graph.add_node(config)
-#         nodes[(x, y)] = node
-    
-#     # Step 5: Create edges between nodes that are directly connected
-#     edges_added = set()  # Track edges we've already added
-    
-#     # Process each line in the merged geometry to find connected nodes
-#     if isinstance(merged_geometry, LineString):
-#         process_line_for_edges(merged_geometry, nodes, graph, edges_added, velocity, min_distance)
-#     else:  # MultiLineString
-#         for line in merged_geometry.geoms:
-#             process_line_for_edges(line, nodes, graph, edges_added, velocity, min_distance)
-
-#     print(f"Created temporal graph with {graph.get_nodes_length()} nodes and {graph.get_edges_length()} edges")
-    
-#     # Before returning, convert NumPy float values to Python floats in all nodes
-#     for node in graph.nodes:
-#         if isinstance(node.config, np.ndarray):
-#             # Convert NumPy array to a list of Python floats
-#             node.config = [float(x) for x in node.config]
-    
-#     return graph
-
 def convert_polygons_to_temporal_graph(polygons, velocity=1.0, min_distance=0.01):
     """
     Convert a polygon map to a TemporalGraph with ordered vertex numbering.
@@ -556,6 +465,3 @@ print(f"Map data saved to {filename}")
 
 # Visualize the temporal graph
 visualize_temporal_graph(graph, map_width, map_height, show_node_indices=True, show_travel_times=False)
-
-# Visualize the graph with directional arrows
-# visualize_graph_with_arrows(graph, map_width, map_height, node_size=80, arrow_size=15, show_node_indices=True, show_travel_times=True)

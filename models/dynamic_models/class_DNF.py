@@ -59,19 +59,6 @@ class dynamic_nf:
         self.cost_hold = cost_hold
         self.cost_move = cost_move
 
-        # self.cost_hold = np.random.uniform(0, 1, len(self.nodes))
-        # self.cost_move = np.random.uniform(0, 1, len(self.edges))
-
-        # Create 2D arrays with random values between 0 and 1 for each node/edge at each time step
-        # self.cost_hold = np.random.uniform(0, 1, (len(self.nodes), self.N_sec))
-        # self.cost_move = np.random.uniform(0, 1, (len(self.edges), self.N_sec))
-
-        # np.save('dynamic_models/costs/0_10robot_biped_cost_hold_TV.npy', self.cost_hold)
-        # np.save('dynamic_models/costs/0_10robot_biped_cost_move_TV.npy', self.cost_move)
-
-        # self.cost_hold = np.load('/home/x/Desktop/LDF/dynamic_models/costs/0_10robot_biped_cost_hold_TV.npy')
-        # self.cost_move = np.load('/home/x/Desktop/LDF/dynamic_models/costs/0_10robot_biped_cost_move_TV.npy')
-
         # Verify that edges do not repeat
         # assert not has_duplicate_first_two(self.edges)
 
