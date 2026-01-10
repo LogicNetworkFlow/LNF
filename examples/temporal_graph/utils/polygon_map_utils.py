@@ -467,3 +467,151 @@ def extract_trajectories(dnf_name, nodes, target_specs, optimizer_type, dict_dnf
 					print(f"Time {t}: Node {vertex}, config={nodes[vertex].config[0]:.2f}, y={nodes[vertex].config[1]:.2f}")
 
 	return trajectories
+
+def plot_grid_world_with_trajectory(graph, target_groups, obstacle_nodes, initial_nodes, trajectory, grid_size=15, title="Robot Navigation", save_path=None, show_all_nodes=True):
+
+    plt.figure(figsize=(12, 12))
+    
+    # Create a mapping from node index to grid coordinates
+    node_to_coord = {}
+    for node in graph.nodes:
+        node_to_coord[node.idx] = (node.config[0], node.config[1])
+    
+    # Plot grid lines
+    for i in range(grid_size + 1):
+        plt.axhline(y=i-0.5, color='lightgray', linestyle='-', alpha=0.5, linewidth=1)
+        plt.axvline(x=i-0.5, color='lightgray', linestyle='-', alpha=0.5, linewidth=1)
+    
+    # Plot all grid cells if requested
+    if show_all_nodes:
+        for node in graph.nodes:
+            x, y = node.config[0], node.config[1]
+            # Plot small dots for all available grid cells (non-obstacles)
+            if node.idx not in obstacle_nodes:
+                plt.scatter(x, y, s=20, c='lightblue', marker='o', alpha=0.3, zorder=1)
+    
+    # Plot obstacles as black squares
+    for obs_node in obstacle_nodes:
+        if obs_node in node_to_coord:
+            x, y = node_to_coord[obs_node]
+            plt.scatter(x, y, s=400, c='black', marker='s', 
+                      edgecolors='darkgray', linewidth=1, 
+                      label='Obstacles' if obs_node == obstacle_nodes[0] else "", 
+                      zorder=3, alpha=0.8)
+            # Add 'X' mark on obstacles
+            plt.text(x, y, 'X', fontsize=12, ha='center', va='center', 
+                    fontweight='bold', color='white', zorder=4)
+    
+    # Define colors for different target groups
+    group_colors = ['red', 'blue', 'green', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
+    
+    # Plot target groups with different colors and shapes
+    for group_idx, group_targets in enumerate(target_groups):
+        color = group_colors[group_idx % len(group_colors)]
+        
+        for target_node in group_targets:
+            if target_node in node_to_coord:
+                x, y = node_to_coord[target_node]
+                plt.scatter(x, y, s=300, c=color, marker='s', 
+                          edgecolors='black', linewidth=2, alpha=0.9, zorder=5,
+                          label=f'Target Group {group_idx+1}' if target_node == group_targets[0] else "")
+                
+                # Add target labels
+                plt.text(x, y-0.3, f'T{group_idx+1}', fontsize=8, ha='center', va='top', 
+                        fontweight='bold', color='white', zorder=6)
+    
+    # Plot initial position
+    for init_node in initial_nodes.keys():
+        if init_node in node_to_coord:
+            x, y = node_to_coord[init_node]
+            plt.scatter(x, y, s=400, c='lime', marker='o', 
+                      edgecolors='black', linewidth=3, 
+                      label='Start', zorder=10)
+            plt.text(x, y, 'S', fontsize=12, ha='center', va='center', 
+                    fontweight='bold', color='black', zorder=11)
+    
+    # Plot trajectory
+    if trajectory and len(trajectory) > 1:
+        # Extract coordinates and times
+        traj_x = []
+        traj_y = []
+        traj_times = []
+        
+        for node_idx, time in trajectory:
+            if node_idx in node_to_coord:
+                x, y = node_to_coord[node_idx]
+                traj_x.append(x)
+                traj_y.append(y)
+                traj_times.append(time)
+        
+        # Plot trajectory line
+        if len(traj_x) > 1:
+            plt.plot(traj_x, traj_y, 'k-', linewidth=4, alpha=0.8, label='Trajectory', zorder=7)
+            
+            # Add arrows to show direction
+            for i in range(len(traj_x) - 1):
+                dx = traj_x[i+1] - traj_x[i]
+                dy = traj_y[i+1] - traj_y[i]
+                if dx != 0 or dy != 0:  # Only add arrow if there's movement
+                    # Calculate arrow position (slightly offset from start)
+                    arrow_x = traj_x[i] + dx * 0.2
+                    arrow_y = traj_y[i] + dy * 0.2
+                    plt.arrow(arrow_x, arrow_y, dx*0.4, dy*0.4, 
+                            head_width=0.2, head_length=0.15, 
+                            fc='darkred', ec='darkred', alpha=0.8, zorder=8)
+            
+            # Add time labels along trajectory (optional - can be cluttered)
+            for i in range(0, len(traj_x), max(1, len(traj_x)//5)):  # Show every few steps
+                plt.text(traj_x[i]+0.2, traj_y[i]+0.2, f't={traj_times[i]}', 
+                        fontsize=8, ha='left', va='bottom', 
+                        bbox=dict(boxstyle='round,pad=0.2', facecolor='yellow', alpha=0.7),
+                        zorder=9)
+        
+        # Highlight final position
+        if traj_x and traj_y:
+            plt.scatter(traj_x[-1], traj_y[-1], s=400, c='gold', marker='*', 
+                      edgecolors='black', linewidth=2, 
+                      label='End', zorder=10)
+            plt.text(traj_x[-1], traj_y[-1], 'E', fontsize=10, ha='center', va='center', 
+                    fontweight='bold', color='black', zorder=11)
+    
+    # Add grid coordinate labels
+    for i in range(0, grid_size, max(1, grid_size//10)):  # Don't overcrowd
+        plt.text(i, -0.8, str(i), fontsize=10, ha='center', va='top')
+        plt.text(-0.8, i, str(i), fontsize=10, ha='right', va='center')
+    
+    plt.xlim(-1.5, grid_size-0.5)
+    plt.ylim(-1.5, grid_size-0.5)
+    plt.gca().set_aspect('equal')
+    plt.title(title, fontsize=16, fontweight='bold', pad=20)
+    plt.xlabel('X Position', fontsize=14)
+    plt.ylabel('Y Position', fontsize=14)
+    
+    # Add legend with better positioning
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=12)
+    
+    # Add comprehensive grid info text
+    info_text = f"Grid: {grid_size}×{grid_size}\n"
+    info_text += f"Total Nodes: {len(graph.nodes)}\n"
+    info_text += f"Obstacles: {len(obstacle_nodes)}\n"
+    info_text += f"Target Groups: {len(target_groups)}\n"
+    info_text += f"Total Targets: {sum(len(group) for group in target_groups)}\n"
+    if trajectory:
+        info_text += f"Path Length: {len(trajectory)} steps\n"
+        info_text += f"Total Time: {trajectory[-1][1] if trajectory else 0}"
+    
+    plt.text(0.02, 0.98, info_text, transform=plt.gca().transAxes, 
+             fontsize=11, verticalalignment='top',
+             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.9, pad=0.5))
+    
+    # Add a subtle grid background
+    plt.gca().set_facecolor('#f8f8f8')
+    
+    plt.tight_layout()
+    
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight', facecolor='white')
+        print(f"Plot saved to {save_path}")
+    
+    # plt.show()
+	

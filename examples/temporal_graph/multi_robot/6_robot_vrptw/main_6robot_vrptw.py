@@ -24,10 +24,10 @@ from termcolor import colored
 def main():
 
 	script_dir = os.path.dirname(os.path.abspath(__file__))
-	graph_filename = os.path.join(script_dir, "..", "50_graph.pkl")
-	N = 50
-	num_robots = 3
-	num_targets = 10
+	graph_filename = os.path.join(script_dir, "..", "100_graph.pkl")
+	N = 60
+	num_robots = 6
+	num_targets = 18
 
 	# Load graph and polygon data
 	with open(graph_filename, 'rb') as f:
@@ -54,32 +54,28 @@ def main():
 
 	curr_nf_name = 'dnf'
 
+	# Create your STL specifications
 	biped_visit0 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[0], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit1 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[1], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit2 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[2], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit3 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[3], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit4 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[4], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit5 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[5], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit6 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[6], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit7 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[7], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit8 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[8], neg=False).always(0, 3)).eventually(0, N-5)
-	
-	not_u_biped_visit0 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[0], neg=True))
-	u_biped_visit1 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[1], neg=False))
-	not_u_biped_visit2 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[2], neg=True))
-	u_biped_visit3 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[3], neg=False))
-	not_u_biped_visit4 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[4], neg=True))
-	u_biped_visit5 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[5], neg=False))
-	not_u_biped_visit6 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[6], neg=True))
-	u_biped_visit7 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[7], neg=False))
-	not_u_biped_visit8 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[8], neg=True))
-	u_biped_visit9 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[9], neg=False))
+	biped_visit9 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[9], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit10 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[10], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit11 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[11], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit12 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[12], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit13 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[13], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit14 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[14], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit15 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[15], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit16 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[16], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit17 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[17], neg=False).always(0, 3)).eventually(0, N-5)
 
-	spec0 = not_u_biped_visit0.until(u_biped_visit1, 0, N-5)
-	spec2 = not_u_biped_visit2.until(u_biped_visit3, 0, N-5)
-	spec4 = not_u_biped_visit4.until(u_biped_visit5, 0, N-5)
-	spec6 = not_u_biped_visit6.until(u_biped_visit7, 0, N-5)
-	spec8 = not_u_biped_visit8.until(u_biped_visit9, 0, N-5)
-      
-	specification = spec0 & spec2 & spec4 & spec6 & spec8 & \
-		biped_visit0 & biped_visit2 & biped_visit4 & biped_visit6 & biped_visit8
-	
+	specification = biped_visit0 & biped_visit1 & biped_visit2 & biped_visit3 & biped_visit4 & biped_visit5 & biped_visit6 & biped_visit7 & biped_visit8 & biped_visit9 \
+						& biped_visit10 & biped_visit11 & biped_visit12 & biped_visit13 & biped_visit14 & biped_visit15 & biped_visit16 & biped_visit17
 	specification.simplify()
 
 	# =====================================================================================
@@ -89,7 +85,7 @@ def main():
 		print(f"{'='*80}\n")
 
 		# Create optimizer model
-		optimizer_model = go.Model(f"until_{num_robots}robot_{model_type}")
+		optimizer_model = go.Model(f"vrptw_{num_robots}robot_{model_type}")
 
 		dict_dnf = {}
 		dnf_name = 'dnf'
@@ -147,8 +143,8 @@ def main():
 											optimizer_type="gurobipy", dict_dnf=dict_dnf)
 		
 		visualize_trajectories_on_map(polygons=polygons, shrunk_polygons=shrunk_polygons, trajectories=trajectories, nodes=graph.nodes, 
-									target_nodes_idx=target_nodes_idx, map_width=map_width,map_height=map_height, show_node_labels=False, show_time=False,
-									show_all_nodes=False, save_path=f"trajectories_{model_type}.png")
+									target_nodes_idx=target_nodes_idx, map_width=map_width, map_height=map_height, show_node_labels=False, show_time=False,
+									show_all_nodes=False, save_path=f"trajectories_VRPTW_{model_type}.png")
 	
 if __name__ == '__main__':
-    main()
+	main()

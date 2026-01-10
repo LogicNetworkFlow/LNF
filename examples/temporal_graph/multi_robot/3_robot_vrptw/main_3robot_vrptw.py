@@ -55,30 +55,18 @@ def main():
 	curr_nf_name = 'dnf'
 
 	biped_visit0 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[0], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit1 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[1], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit2 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[2], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit3 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[3], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit4 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[4], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit5 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[5], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit6 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[6], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit7 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[7], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit8 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[8], neg=False).always(0, 3)).eventually(0, N-5)
-	
-	not_u_biped_visit0 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[0], neg=True))
-	u_biped_visit1 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[1], neg=False))
-	not_u_biped_visit2 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[2], neg=True))
-	u_biped_visit3 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[3], neg=False))
-	not_u_biped_visit4 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[4], neg=True))
-	u_biped_visit5 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[5], neg=False))
-	not_u_biped_visit6 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[6], neg=True))
-	u_biped_visit7 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[7], neg=False))
-	not_u_biped_visit8 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[8], neg=True))
-	u_biped_visit9 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[9], neg=False))
-
-	spec0 = not_u_biped_visit0.until(u_biped_visit1, 0, N-5)
-	spec2 = not_u_biped_visit2.until(u_biped_visit3, 0, N-5)
-	spec4 = not_u_biped_visit4.until(u_biped_visit5, 0, N-5)
-	spec6 = not_u_biped_visit6.until(u_biped_visit7, 0, N-5)
-	spec8 = not_u_biped_visit8.until(u_biped_visit9, 0, N-5)
+	biped_visit9 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[9], neg=False).always(0, 3)).eventually(0, N-5)
       
-	specification = spec0 & spec2 & spec4 & spec6 & spec8 & \
-		biped_visit0 & biped_visit2 & biped_visit4 & biped_visit6 & biped_visit8
+	specification = biped_visit0 & biped_visit1 & biped_visit2 & biped_visit3 & biped_visit4 & \
+		biped_visit5 & biped_visit6 & biped_visit7 & biped_visit8 & biped_visit9
 	
 	specification.simplify()
 
@@ -89,7 +77,7 @@ def main():
 		print(f"{'='*80}\n")
 
 		# Create optimizer model
-		optimizer_model = go.Model(f"until_{num_robots}robot_{model_type}")
+		optimizer_model = go.Model(f"vrptw_{num_robots}robot_{model_type}")
 
 		dict_dnf = {}
 		dnf_name = 'dnf'
@@ -147,8 +135,8 @@ def main():
 											optimizer_type="gurobipy", dict_dnf=dict_dnf)
 		
 		visualize_trajectories_on_map(polygons=polygons, shrunk_polygons=shrunk_polygons, trajectories=trajectories, nodes=graph.nodes, 
-									target_nodes_idx=target_nodes_idx, map_width=map_width,map_height=map_height, show_node_labels=False, show_time=False,
-									show_all_nodes=False, save_path=f"trajectories_{model_type}.png")
+									target_nodes_idx=target_nodes_idx, map_width=map_width, map_height=map_height, show_node_labels=False, show_time=False,
+									show_all_nodes=False, save_path=f"trajectories_VRPTW_{model_type}.png")
 	
 if __name__ == '__main__':
-    main()
+	main()

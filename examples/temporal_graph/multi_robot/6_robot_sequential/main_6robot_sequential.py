@@ -24,10 +24,10 @@ from termcolor import colored
 def main():
 
 	script_dir = os.path.dirname(os.path.abspath(__file__))
-	graph_filename = os.path.join(script_dir, "..", "50_graph.pkl")
-	N = 50
-	num_robots = 3
-	num_targets = 10
+	graph_filename = os.path.join(script_dir, "..", "100_graph.pkl")
+	N = 60
+	num_robots = 6
+	num_targets = 18
 
 	# Load graph and polygon data
 	with open(graph_filename, 'rb') as f:
@@ -59,7 +59,11 @@ def main():
 	biped_visit4 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[4], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit6 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[6], neg=False).always(0, 3)).eventually(0, N-5)
 	biped_visit8 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[8], neg=False).always(0, 3)).eventually(0, N-5)
-	
+	biped_visit10 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[10], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit12 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[12], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit14 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[14], neg=False).always(0, 3)).eventually(0, N-5)
+	biped_visit16 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[16], neg=False).always(0, 3)).eventually(0, N-5)
+
 	not_u_biped_visit0 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[0], neg=True))
 	u_biped_visit1 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[1], neg=False))
 	not_u_biped_visit2 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[2], neg=True))
@@ -70,16 +74,28 @@ def main():
 	u_biped_visit7 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[7], neg=False))
 	not_u_biped_visit8 =  (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[8], neg=True))
 	u_biped_visit9 =      (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[9], neg=False))
+	not_u_biped_visit10 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[10], neg=True))
+	u_biped_visit11 =     (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[11], neg=False))
+	not_u_biped_visit12 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[12], neg=True))
+	u_biped_visit13 =     (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[13], neg=False))
+	not_u_biped_visit14 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[14], neg=True))
+	u_biped_visit15 =     (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[15], neg=False))
+	not_u_biped_visit16 = (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[16], neg=True))
+	u_biped_visit17 =     (ConvexSetPredicate(name=curr_nf_name, edge_no=target_nodes_idx[17], neg=False))
 
 	spec0 = not_u_biped_visit0.until(u_biped_visit1, 0, N-5)
 	spec2 = not_u_biped_visit2.until(u_biped_visit3, 0, N-5)
 	spec4 = not_u_biped_visit4.until(u_biped_visit5, 0, N-5)
 	spec6 = not_u_biped_visit6.until(u_biped_visit7, 0, N-5)
 	spec8 = not_u_biped_visit8.until(u_biped_visit9, 0, N-5)
-      
-	specification = spec0 & spec2 & spec4 & spec6 & spec8 & \
-		biped_visit0 & biped_visit2 & biped_visit4 & biped_visit6 & biped_visit8
-	
+	spec10 = not_u_biped_visit10.until(u_biped_visit11, 0, N-5)
+	spec12 = not_u_biped_visit12.until(u_biped_visit13, 0, N-5)
+	spec14 = not_u_biped_visit14.until(u_biped_visit15, 0, N-5)
+	spec16 = not_u_biped_visit16.until(u_biped_visit17, 0, N-5)
+		
+	specification = spec0 & spec2 & spec4 & spec6 & spec8 & spec10 & spec12 & spec14 & spec16 & \
+		biped_visit0 & biped_visit2 & biped_visit4 & biped_visit6 & biped_visit8 & biped_visit10 & biped_visit12 & biped_visit14 & biped_visit16
+
 	specification.simplify()
 
 	# =====================================================================================
