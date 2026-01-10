@@ -27,7 +27,7 @@ In the [examples](examples) folder, we provide code to reproduce the experiments
 |------------|--------|------|
 | Temporal Graph Planning | <img src="figures/temporal_graph.png" width="250"/> | Single Robot: [single_robot.py](examples/temporal_graph/single_robot/single_robot.py)<br>Multi-Robot (3 agents):<br>• Sequential: [main_3robot_sequential.py](examples/temporal_graph/multi_robot/3_robot_sequential/main_3robot_sequential.py)<br>• VRPTW: [main_3robot_vrptw.py](examples/temporal_graph/multi_robot/3_robot_vrptw/main_3robot_vrptw.py)<br>Multi-Robot (6 agents):<br>• Sequential: [main_6robot_sequential.py](examples/temporal_graph/multi_robot/6_robot_sequential/main_6robot_sequential.py)<br>• VRPTW: [main_6robot_vrptw.py](examples/temporal_graph/multi_robot/6_robot_vrptw/main_6robot_vrptw.py) |
 | Search & Rescue | <img src="figures/search_rescue.png" width="250"/> | [main_SR.py](examples/temporal_graph/search_and_rescue/main_SR.py) |
-| Point Mass Navigation | <img src="figures/point_mass.png" width="250"/> |  |
+| Point Mass Navigation | <img src="figures/point_mass.png" width="250"/> | Environment 1: [main_env1_point_mass.py](examples/point_mass/main_env1_point_mass.py)<br>Environment 2: [main_env2_point_mass.py](examples/point_mass/main_env2_point_mass.py) |
 | Bipedal Locomotion | <img src="figures/lip_locomotion.png" width="250"/> |  |
 | Three Robot Coordinated Planning (Hardware) | <img src="figures/hardware_3_robot.png" width="250"/> |  |
 | Single Robot Re-planning (Hardware) | <img src="figures/hardware_1_robot.png" width="250"/> |  |
